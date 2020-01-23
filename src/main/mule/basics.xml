@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="355b9566-214b-458e-aebb-0e40b09efcf9" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="basicsFlow" doc:id="13050eb2-44a2-4fd0-bd73-a4afa4fb5338" >
+		<http:listener doc:name="Listener" doc:id="4f631a49-960b-4a6c-a36a-d54a8eedd3a6" config-ref="HTTP_Listener_config" path="/basics" allowedMethods="GET"/>
+		<set-payload value="#[attributes.listenerPath]" doc:name="Set Payload" doc:id="7997c21c-171b-4d0a-8b47-fc04c8c386cc" mimeType="application/json"/>
+		<logger level="INFO" doc:name="Logger" doc:id="d3d689ce-7a0e-41ed-ba43-7415af60f551" />
+	</flow>
+	<flow name="basicsFlow1" doc:id="684ff650-7d5b-47d6-8252-1f99c49673b7" >
+		<http:listener doc:name="Listener" doc:id="003eedf0-09db-47dc-86c2-f05d7e99b693" config-ref="HTTP_Listener_config" path="/meth" allowedMethods="GET"/>
+		<set-payload value="#[attributes.method]" doc:name="Set Payload" doc:id="3db12228-1c82-4cd7-b7f8-948acb9e63a6" mimeType="application/json"/>
+		<logger level="INFO" doc:name="Logger" doc:id="83e6c6a8-8307-441e-b7f6-1e1a8afae267" message="#[payload]"/>
+	</flow>
+	<flow name="basicsFlow2" doc:id="50b55c76-2383-4041-8fa8-c4f132f3781b" >
+		<http:listener doc:name="Listener" doc:id="358c86ef-23c2-48a0-a314-d679404650e8" config-ref="HTTP_Listener_config" path="/vars" allowedMethods="GET"/>
+		<set-variable value='#[attributes.queryParams.Name]' doc:name="Set Variable" doc:id="3e2502bc-8f49-45d9-9e1a-843709eeac1c" variableName="Name"/>
+		<set-payload value="#[vars.Name]" doc:name="Set Payload" doc:id="978cc557-4215-4893-bda9-8bc8b8b86f6f" mimeType="application/json"/>
+		<logger level="INFO" doc:name="Logger" doc:id="831fefce-c9e3-4073-9348-9db44ec19c59" message="#[payload]"/>
+	</flow>
+	<flow name="Copy_of_basicsFlow" doc:id="3ecf6ee6-f9b5-4ef2-bec7-f87fa8e0749e" >
+		<http:listener doc:name="Listener" doc:id="ab8a0742-a9a2-47f4-b212-c9816be99ca8" config-ref="HTTP_Listener_config" path="/vars1" allowedMethods="GET" />
+		<set-variable value='#[attributes.queryParams.age]' doc:name="Set Variable" doc:id="a73d8bcd-7631-4cd0-804f-24c141820b78" variableName="age" />
+		<set-payload value="#[vars.age&gt;=40]" doc:name="Set Payload" doc:id="2e1a3039-ec58-4623-8179-aa489d5d8abf" mimeType="application/json"/>
+		<logger level="INFO" doc:name="Logger" doc:id="8b9650f0-eb80-4953-a310-8a06d5c80301" message="#[payload]" />
+	</flow>
+</mule>
